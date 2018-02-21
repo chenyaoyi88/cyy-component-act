@@ -1,0 +1,29 @@
+{
+  "name": "cyy-component-act",
+  "version": "1.0.0",
+  "description": "cyy-component-act",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenyaoyi88/cyy-component-act.git"
+  },
+  "keywords": [
+    "typescript",
+    "sass"
+  ],
+  "author": "cyy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chenyaoyi88/cyy-component-act/issues"
+  },
+  "homepage": "https://github.com/chenyaoyi88/cyy-component-act#readme",
+  "devDependencies": {
+    "@types/node": "^9.4.6",
+    "node-sass": "^4.7.2",
+    "parcel-bundler": "^1.6.1",
+    "typescript": "^2.7.2"
+  }
+}
