@@ -86,7 +86,7 @@ const modal = {
 
     this.oModalEle = document.getElementById(this.sModalId) as HTMLDivElement;
   },
-  remove: function (event: any) {
+  close: function (event: any) {
     event.preventDefault();
     const oTarget = event.srcElement;
     const targetID = oTarget['dataset'].id;
@@ -97,11 +97,12 @@ const modal = {
         // 如果是动画打开
         this.oModalEle.classList.remove('show-animate');
 
-        setTimeout(() => { 
+        setTimeout(() => {
           if (this.oBody.contains(this.oModalEle)) {
             this.oBody.removeChild(this.oModalEle);
             this.options.confirmCallback && this.options.confirmCallback();
-            document.removeEventListener('click', this.remove, false);
+            document.removeEventListener('click', this.close, false);
+            this.remove = function () { };
           }
         }, this.duration);
 
@@ -109,7 +110,8 @@ const modal = {
         // 非动画打开
         this.oBody.removeChild(this.oModalEle);
         this.options.confirmCallback && this.options.confirmCallback();
-        document.removeEventListener('click', this.remove, false);
+        document.removeEventListener('click', this.close, false);
+        this.remove = function () { };
       }
 
       // 恢复位置
@@ -147,10 +149,13 @@ const modal = {
       options.openCallback && options.openCallback()
     }, this.duration);
 
-    document.addEventListener('click', (ev) => {
-      this.remove(ev);
-    }, false);
 
+    this.remove();
+  },
+  remove: function () {
+    document.addEventListener('click', (ev) => {
+      this.close(ev);
+    }, false);
   }
 };
 
