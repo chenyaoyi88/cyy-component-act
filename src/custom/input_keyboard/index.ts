@@ -20,6 +20,9 @@ interface Cik_options {
 }
 
 const cInputKeyboard = {
+    oBody: null,
+    oBodyCurPos: '',
+    sCikID: '',
     oCustomInputKeyboard: null,
     aCustomInputList: null,
     aInputNum: [],
@@ -28,7 +31,8 @@ const cInputKeyboard = {
     isDisabled: false,
     isExist: false,
     inputTag: '*',
-    init: function (id: string, options: Cik_options) {
+    // init: function (id: string, options: Cik_options) {
+    init: function (options: Cik_options) {
         const wrapClass = options.wrapClass || '';
         const title = options.title || '请输入密码';
         this.nInputNumLen = options.len || 6;
@@ -38,13 +42,15 @@ const cInputKeyboard = {
 
         if (this.isExist) return;
 
+        this.sCikID = `cyy-input-keyboard-${new Date().getTime()}`;
+
         let sInputList: string = '';
         for (let i = 0; i < this.nInputNumLen; i++) {
             sInputList += '<strong></strong>';
         }
 
         document.body.insertAdjacentHTML('beforeend', `
-        <div class="input-keyboard-wrap ${wrapClass}" id="${id}">
+        <div class="input-keyboard-wrap ${wrapClass}" id="${this.sCikID}">
             <div class="input-wrap" data-cikid="custom-input">
                 <div class="input-num-wrap">
                     <div class="input-num-title">${title}</div>
@@ -85,11 +91,12 @@ const cInputKeyboard = {
         `);
 
         this.isExist = true;
+        this.oBody = document.body;
     },
-    show: function (id: string, options: Cik_options = {}) {
+    show: function (options: Cik_options = {}) {
 
         if (!this.isExist) {
-            this.init(id, options);
+            this.init(options);
         }
 
         if (window.location.href.indexOf('#inputkeyboard') === -1) {
@@ -97,8 +104,16 @@ const cInputKeyboard = {
         }
 
         this.aInputNum = [];
-        this.oCustomInputKeyboard = document.getElementById(id);
+        this.oCustomInputKeyboard = document.getElementById(this.sCikID);
         this.aCustomInputList = this.oCustomInputKeyboard.querySelector('[data-cikid=custom-input-list]').children;
+
+        const scrollTop = window.pageYOffset
+            || document.documentElement.scrollTop
+            || this.oBody.scrollTop
+            || 0;
+        this.oBodyCurPos = scrollTop;
+        this.oBody.style.top = -1 * scrollTop + 'px';
+        this.oBody.style.position = 'fixed';
 
         setTimeout(() => {
             this.oCustomInputKeyboard.classList.add('show-animate');
@@ -144,6 +159,13 @@ const cInputKeyboard = {
         }, false);
     },
     hide: function (isRemove: false) {
+
+        // 恢复位置
+        this.oBody.style.overflow = '';
+        this.oBody.style.position = null;
+        this.oBody.style.top = null;
+        window.scrollTo(0, this.oBodyCurPos);
+
         this.aInputNum = [];
         this.oCustomInputKeyboard.classList.remove('show-animate');
         setTimeout(() => {

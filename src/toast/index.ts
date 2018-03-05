@@ -11,7 +11,9 @@ interface Toast {
  */
 const toast = function(text: string, options: Toast = {}) {
 
-  if (document.getElementById('toast')) {
+  const sToastID = `cyy-toast-${new Date().getTime()}`;
+
+  if (document.getElementById(sToastID)) {
     return false;
   }
 
@@ -20,14 +22,14 @@ const toast = function(text: string, options: Toast = {}) {
 
   doc.insertAdjacentHTML(
     'beforeend',
-    `<div class='toast' id='toast'>
+    `<div class='toast' id='${sToastID}'>
                         <div class='toast-wrap'>
                             <div data-id="toast-content" class='toast-content'>${toastText}</div>
                         </div>
                     </div>`
   );
 
-  const oToast = document.getElementById('toast');
+  const oToast = document.getElementById(sToastID);
   const oToastText = oToast.querySelector(
     '[data-id=toast-content]'
   ) as HTMLDivElement;

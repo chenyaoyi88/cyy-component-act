@@ -33,7 +33,7 @@ const modal = {
   oModalEle: null,
   oBody: null,
   oBodyCurPos: '',
-  sModalId: 'cyy-modal',
+  sModalId: '',
   options: {},
   duration: 300,
   create: function (options?: ShowModal) {
@@ -63,6 +63,7 @@ const modal = {
 
     this.oBody = document.body;
     this.options = options;
+    this.sModalId = `cyy-modal-${new Date().getTime()}`
 
     this.oBody.insertAdjacentHTML(
       'beforeend',
