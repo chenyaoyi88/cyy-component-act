@@ -10,6 +10,7 @@ $ci_borderColor: #bfbfbf;
     display: flex;
     justify-content: center;
     align-items: center;
+    visibility: hidden;
     .input-keyboard-wrap-bg {
         position: absolute;
         left: 0;
@@ -160,7 +161,8 @@ $ci_borderColor: #bfbfbf;
             }
         }
     }
-    &.show {
+    &.show-animate {
+        visibility: visible;
         .input-keyboard-wrap-bg {
             opacity: 1;
         }

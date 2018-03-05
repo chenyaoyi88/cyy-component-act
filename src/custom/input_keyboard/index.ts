@@ -8,7 +8,9 @@ interface Cik_options {
     // 输入的长度（默认6位）
     len?: number;
     // 是否显示输入
-    isShow?: boolean;
+    isShowInput?: boolean;
+    // 是否已存在
+    isExist?: boolean;
     // 不显示输入的时候显示什么东西（默认*）
     inputTag?: string;
     // 输入类型
@@ -22,23 +24,20 @@ const cInputKeyboard = {
     aCustomInputList: null,
     aInputNum: [],
     nInputNumLen: 0,
-    isShow: false,
+    isShowInput: false,
+    isDisabled: false,
+    isExist: false,
     inputTag: '*',
     init: function (id: string, options: Cik_options) {
         const wrapClass = options.wrapClass || '';
         const title = options.title || '请输入密码';
         this.nInputNumLen = options.len || 6;
         this.compelete = options.compelete;
-        this.isShow = options.isShow || false;
+        this.isShowInput = options.isShowInput || false;
         this.inputTag = options.inputTag || '*';
 
-        if (document.querySelectorAll('#' + id).length) return false;
+        if (this.isExist) return;
 
-        if (window.location.href.indexOf('#inputkeyboard') === -1) {
-            window.history.pushState(null, null, '#inputkeyboard');
-        }
-
-        this.aInputNum = [];
         let sInputList: string = '';
         for (let i = 0; i < this.nInputNumLen; i++) {
             sInputList += '<strong></strong>';
@@ -85,19 +84,26 @@ const cInputKeyboard = {
         </div>
         `);
 
+        this.isExist = true;
+    },
+    show: function (id: string, options: Cik_options = {}) {
+
+        if (!this.isExist) {
+            this.init(id, options);
+        }
+
+        if (window.location.href.indexOf('#inputkeyboard') === -1) {
+            window.history.pushState(null, null, '#inputkeyboard');
+        }
+
+        this.aInputNum = [];
         this.oCustomInputKeyboard = document.getElementById(id);
         this.aCustomInputList = this.oCustomInputKeyboard.querySelector('[data-cikid=custom-input-list]').children;
 
         setTimeout(() => {
-            this.oCustomInputKeyboard.classList.add('show');
+            this.oCustomInputKeyboard.classList.add('show-animate');
         }, 50);
 
-        return true;
-    },
-    show: function (id: string, options: Cik_options = {}) {
-        if (!this.init(id, options)) {
-            return false;
-        }
         this.handle();
     },
     handle: function () {
@@ -107,10 +113,10 @@ const cInputKeyboard = {
             if (oTarget['dataset']['ciknum']) {
                 switch (oTarget['dataset']['ciknum']) {
                     case 'close':
-                        this.close();
+                        this.hide();
                         break;
                     case 'delete':
-                        if (this.aInputNum.length === 0) return;
+                        if (this.aInputNum.length === 0 || (this.aInputNum.length === this.nInputNumLen)) return;
                         // 删除输入的值
                         this.aInputNum.pop();
                         this.setInputValue();
@@ -133,22 +139,29 @@ const cInputKeyboard = {
         // 监听安卓的后退键，当 url hash 有改变时，关闭输入界面
         window.addEventListener('hashchange', () => {
             if (window.location.href.indexOf('#inputkeyboard') === -1) {
-                this.close();
+                this.hide();
             }
         }, false);
     },
-    close: function () {
+    hide: function (isRemove: false) {
         this.aInputNum = [];
-        this.oCustomInputKeyboard.classList.remove('show');
+        this.oCustomInputKeyboard.classList.remove('show-animate');
         setTimeout(() => {
             if (document.body.contains(this.oCustomInputKeyboard)) {
-                document.body.removeChild(this.oCustomInputKeyboard);
                 this.handle = function () { };
                 if (window.location.href.indexOf('#inputkeyboard') !== -1) {
                     window.history.back();
                 }
+                this.setInputValue();
+                if (isRemove) {
+                    document.body.removeChild(this.oCustomInputKeyboard);
+                    this.isExist = false;
+                }
             }
-        }, 400);
+        }, 250);
+    },
+    close: function () {
+        this.hide(true);
     },
     setInputValue: function () {
         for (let i = 0; i < this.aCustomInputList.length; i++) {
@@ -156,7 +169,7 @@ const cInputKeyboard = {
                 if (this.aCustomInputList[i].innerHTML) {
                     continue;
                 } else {
-                    if (!this.isShow) {
+                    if (!this.isShowInput) {
                         this.aCustomInputList[i].innerHTML = this.inputTag;
                     } else {
                         this.aCustomInputList[i].innerHTML = this.aInputNum[i];
