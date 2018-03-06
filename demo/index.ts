@@ -1,8 +1,11 @@
 import './sass/index.scss';
-import { modal, toast, loading, cInputKeyboard } from '../src';
+import { modal, toast, loading, cInputKeyboard, cKeyboard, Cyykeyboard } from '../src';
 import * as IMG_success from './image/success.png';
 
 window.onload = function () {
+    
+    const cyyKeyboard = new Cyykeyboard('abc');
+
     document.addEventListener('click', function (ev) {
         const oEvent = ev || event;
         const oTarget = oEvent.srcElement;
@@ -46,6 +49,21 @@ window.onload = function () {
                         setTimeout(() => {
                             cInputKeyboard.close();
                         }, 1000);
+                    }
+                });
+                break;
+            case 'show-cyy-keyboard':
+                cyyKeyboard.show({
+                    isShowBg: true,
+                    outputNum: function (data: string) {
+                        console.log(data);
+                        if (data.length === 5) {
+                            loading.show();
+                            setTimeout(function () {
+                                loading.hide();
+                                cyyKeyboard.close();
+                            }, 1000);
+                        }
                     }
                 });
                 break;

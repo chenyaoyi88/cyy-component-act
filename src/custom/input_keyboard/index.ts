@@ -31,7 +31,6 @@ const cInputKeyboard = {
     isDisabled: false,
     isExist: false,
     inputTag: '*',
-    // init: function (id: string, options: Cik_options) {
     init: function (options: Cik_options) {
         const wrapClass = options.wrapClass || '';
         const title = options.title || '请输入密码';

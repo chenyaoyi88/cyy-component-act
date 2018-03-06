@@ -23,15 +23,15 @@ button {
     height: px2vw(80);
     font-size: px2vw(32);
     color: #fff;
-    background: #ffbf06;
+    background: #4565f7;
     border-radius: px2vw(40);
     &:disabled {
       color: #fdfdfd;
       background-color: #c4c4c4;
     }
     &:active {
-      color: rgb(250, 33, 33);
-      background-color: rgb(240, 172, 0);
+      // color: rgb(250, 33, 33);
+      background-color: #5875f7;
     }
   }
 }
