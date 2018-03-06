@@ -1,0 +1,70 @@
+// 弹窗辅助样式
+.act-other {
+  .modal-content {
+    .modal-text-wrap {
+      // 图片包裹框样式
+      .modal-img-wrap {
+      } // 图片下面的文字样式
+      .modal-text {
+        .text {
+          font-size: px2vw(30);
+          font-weight: 500;
+          color: #909090;
+          text-align: center;
+        }
+      } // 按钮样式
+    }
+  }
+  .modal-btn-wrap {
+    user-select: none;
+  }
+  &.error {
+    .modal-img-wrap {
+      width: px2vw(380);
+    }
+  }
+}
+
+.modal-table-wrap {
+  width: 100%;
+  max-height: px2vw(600);
+  min-height: px2vw(100);
+  overflow: hidden;
+  border-bottom: 1px solid #ccc;
+  table {
+    width: 100%;
+    border: 1px solid #ccc;
+    thead {
+      tr {
+        th {
+          text-align: center;
+          padding: px2vw(30) 0;
+          background: #eaeaea;
+          border-right: 1px solid #ccc;
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:first-child {
+          border-top: none;
+        }
+        td {
+          text-align: center;
+          padding: px2vw(15) 0;
+          border-right: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+        }
+      }
+    }
+  }
+  .table-list-wrap {
+    margin-top: -1px;
+    max-height: px2vw(500);
+    overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+    table {
+      border-top: none;
+    }
+  }
+}

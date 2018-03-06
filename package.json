@@ -4,7 +4,12 @@
   "description": "cyy-component-act",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf build dist_test dist_prod dist .cache",
+    "start": "npm run clean && parcel ./demo/index.html -p 4321",
+    "build:test": "npm run clean && cross-env NODE_ENV=test parcel build ./demo/index.html -d dist_test --public-url ./",
+    "preview:test": "browser-sync start --server dist_test --port 8002 --no-open external --no-notify",
+    "bp:test": "npm run build:test && npm run preview:test",
+    "test": "npm run build:test && node test/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,8 +27,12 @@
   "homepage": "https://github.com/chenyaoyi88/cyy-component-act#readme",
   "devDependencies": {
     "@types/node": "^9.4.6",
+    "autoprefixer": "^8.0.0",
+    "browser-sync": "^2.23.6",
+    "chalk": "^2.3.1",
+    "internal-ip": "^3.0.1",
     "node-sass": "^4.7.2",
-    "parcel-bundler": "^1.6.1",
+    "parcel-bundler": "^1.6.2",
     "typescript": "^2.7.2"
   }
 }

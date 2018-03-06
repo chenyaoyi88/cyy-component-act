@@ -1,0 +1,22 @@
+// px 转换成 vw，以 750 设计搞作为参考
+@function px2vw($px) {
+    @return ($px / 750) * 100vw;
+}
+
+// 水平垂直
+@mixin align-justify($dir: row) {
+    display: flex;
+    flex-direction: $dir;
+    align-items: center;
+    justify-content: center;
+}
+
+// 遮罩
+@mixin mask($zindex) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: $zindex;
+}
